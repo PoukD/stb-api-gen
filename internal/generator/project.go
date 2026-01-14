@@ -33,6 +33,7 @@ func CreateProject(projectName string) error {
 		"util/jwt",
 	}
 
+	// create all directories first
 	for _, d := range dirs {
 		fullPath := filepath.Join(root, d)
 		if err := os.MkdirAll(fullPath, 0755); err != nil {
@@ -69,15 +70,17 @@ func main() {
 		"util/jwt/jwt.go":       "package jwt\n",
 	}
 
+	// create files safely
 	for path, content := range files {
 		fullPath := filepath.Join(root, filepath.FromSlash(path))
 
-		// Ensure parent directory exists
-		if err := os.MkdirAll(filepath.Dir(fullPath), 0755); err != nil {
-			return fmt.Errorf("failed to create parent dir for file %s: %w", fullPath, err)
+		// ensure parent folder exists (Windows fix)
+		parentDir := filepath.Dir(fullPath)
+		if err := os.MkdirAll(parentDir, 0755); err != nil {
+			return fmt.Errorf("failed to create parent dir for %s: %w", fullPath, err)
 		}
 
-		// Only create file if not exist
+		// create file if it doesn't exist
 		if _, err := os.Stat(fullPath); os.IsNotExist(err) {
 			if err := os.WriteFile(fullPath, []byte(content), 0644); err != nil {
 				return fmt.Errorf("failed to write file %s: %w", fullPath, err)
