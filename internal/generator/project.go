@@ -57,11 +57,11 @@ func main() {
 
 		"cmd/app/app.go":                               "package app\n",
 		"cmd/middleware/health/health.go":              "package health\n",
-		"cmd/middleware/log/log.go":                    "package log\n",
+		"cmd/middleware/log/log.go":                    "package middlewarelog\n",
 		"cmd/middleware/request/request.go":            "package request\n",
 		"cmd/middleware/verify/verify.go":              "package verify\n",
 		"cmd/routes/external/controller/controller.go": "package controller\n",
-		"cmd/routes/internal/internal.go":              "package internal\n",
+		"cmd/routes/internal/internal.go":              "package internalpkg\n",
 
 		"config/database/database.go": "package database\n",
 		"config/http/model/http.go":   "package model\n",
