@@ -34,8 +34,9 @@ func CreateProject(projectName string) error {
 	}
 
 	for _, d := range dirs {
-		if err := os.MkdirAll(filepath.Join(root, d), 0755); err != nil {
-			return err
+		fullPath := filepath.Join(root, d)
+		if err := os.MkdirAll(fullPath, 0755); err != nil {
+			return fmt.Errorf("failed to create dir %s: %w", fullPath, err)
 		}
 	}
 
@@ -53,13 +54,13 @@ func main() {
 }
 `,
 
-		"cmd/app/app.go":                         "package app\n",
-		"cmd/middleware/health/health.go":        "package health\n",
-		"cmd/middleware/log/log.go":              "package log\n",
-		"cmd/middleware/request/request.go":      "package request\n",
-		"cmd/middleware/verify/verify.go":        "package verify\n",
+		"cmd/app/app.go":                               "package app\n",
+		"cmd/middleware/health/health.go":              "package health\n",
+		"cmd/middleware/log/log.go":                    "package log\n",
+		"cmd/middleware/request/request.go":            "package request\n",
+		"cmd/middleware/verify/verify.go":              "package verify\n",
 		"cmd/routes/external/controller/controller.go": "package controller\n",
-		"cmd/routes/internal/internal.go":         "package internal\n",
+		"cmd/routes/internal/internal.go":              "package internal\n",
 
 		"config/database/database.go": "package database\n",
 		"config/http/model/http.go":   "package model\n",
@@ -69,17 +70,21 @@ func main() {
 	}
 
 	for path, content := range files {
-		fullPath := filepath.Join(root, path)
+		fullPath := filepath.Join(root, filepath.FromSlash(path))
 
-		if _, err := os.Stat(fullPath); err == nil {
-			continue // do not overwrite
+		// Ensure parent directory exists
+		if err := os.MkdirAll(filepath.Dir(fullPath), 0755); err != nil {
+			return fmt.Errorf("failed to create parent dir for file %s: %w", fullPath, err)
 		}
 
-		if err := os.WriteFile(fullPath, []byte(content), 0644); err != nil {
-			return err
+		// Only create file if not exist
+		if _, err := os.Stat(fullPath); os.IsNotExist(err) {
+			if err := os.WriteFile(fullPath, []byte(content), 0644); err != nil {
+				return fmt.Errorf("failed to write file %s: %w", fullPath, err)
+			}
 		}
 	}
 
-	fmt.Println("✅ Go project created:", projectName)
+	fmt.Println("✅ Go project created with files:", projectName)
 	return nil
 }
