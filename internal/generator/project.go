@@ -9,6 +9,7 @@ import (
 func CreateProject(projectName string) error {
 	root := projectName
 
+	// ---------- DIRECTORIES ----------
 	dirs := []string{
 		".vscode",
 
@@ -38,30 +39,47 @@ func CreateProject(projectName string) error {
 		}
 	}
 
-	// go.mod
-	goMod := fmt.Sprintf(`module %s
+	// ---------- FILES ----------
+	files := map[string]string{
+		"go.mod": fmt.Sprintf(`module %s
 
 go 1.21
-`, projectName)
+`, projectName),
 
-	writeFileIfNotExist(filepath.Join(root, "go.mod"), goMod)
-
-	// main.go
-	mainGo := `package main
+		"main.go": `package main
 
 func main() {
-	// TODO: bootstrap app
+	// TODO: bootstrap application
 }
-`
-	writeFileIfNotExist(filepath.Join(root, "main.go"), mainGo)
+`,
 
-	fmt.Println("✅ Project created:", projectName)
-	return nil
-}
+		"cmd/app/app.go":                         "package app\n",
+		"cmd/middleware/health/health.go":        "package health\n",
+		"cmd/middleware/log/log.go":              "package log\n",
+		"cmd/middleware/request/request.go":      "package request\n",
+		"cmd/middleware/verify/verify.go":        "package verify\n",
+		"cmd/routes/external/controller/controller.go": "package controller\n",
+		"cmd/routes/internal/internal.go":         "package internal\n",
 
-func writeFileIfNotExist(path, content string) {
-	if _, err := os.Stat(path); err == nil {
-		return
+		"config/database/database.go": "package database\n",
+		"config/http/model/http.go":   "package model\n",
+
+		"util/bcrypt/bcrypt.go": "package bcrypt\n",
+		"util/jwt/jwt.go":       "package jwt\n",
 	}
-	_ = os.WriteFile(path, []byte(content), 0644)
+
+	for path, content := range files {
+		fullPath := filepath.Join(root, path)
+
+		if _, err := os.Stat(fullPath); err == nil {
+			continue // do not overwrite
+		}
+
+		if err := os.WriteFile(fullPath, []byte(content), 0644); err != nil {
+			return err
+		}
+	}
+
+	fmt.Println("✅ Go project created:", projectName)
+	return nil
 }
