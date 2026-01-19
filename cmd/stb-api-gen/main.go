@@ -17,7 +17,7 @@ func main() {
 	projectName := os.Args[1]
 
 	if err := generator.CreateProject(projectName); err != nil {
-		fmt.Println("Error:", err)
+		fmt.Println("❌ Error:", err)
 		os.Exit(1)
 	}
 }
