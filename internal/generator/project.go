@@ -103,7 +103,7 @@ func CreateProject(project string) error {
 	// root files
 	rootFiles := map[string]string{
 		".env": fmt.Sprintf(`
-		SERVICE_PORT=3201
+SERVICE_PORT=3201
 SERVICE_NAME=%s
 SERVICE_HOST=127.0.0.1
 SERVICE_ID=%s-${SERVICE_PORT}
@@ -133,9 +133,9 @@ HEALTH_CHECK_PORT=8080
 HEALTH_CHECK_URL=${HEALTH_CHECK_INTERVAL}:${HEALTH_CHECK_PORT}${HEALTH_CHECK_PATH}
 `, project, project),
 		".gitignore": `
-		.env
-		logs/
-		auth-service`,
+.env
+logs/
+auth-service`,
 		"README.md": `# golang-structure
 
 #### INSTALL PACKAGE STRUCTURE
@@ -270,13 +270,52 @@ require (
 
 	// base files
 	baseFiles := map[string]string{
-		"cmd/app/main.go":                         "package main\n\nfunc main() {}\n",
-		"cmd/routes/router.go":                    "package routes\n",
-		"cmd/middleware/health/healthCheck.go":    "package health\n",
-		"cmd/middleware/log/log_http.go":          "package log\n",
-		"cmd/middleware/log/log_error.go":         "package log\n",
-		"cmd/middleware/log/log_request.go":       "package log\n",
-		"cmd/middleware/request/headerRequest.go": "package request\n",
+		"cmd/app/main.go": `
+package main
+
+import (
+	"auth-service/cmd/middleware/health"
+	logs "auth-service/cmd/middleware/log"
+	"auth-service/cmd/middleware/request"
+	"auth-service/cmd/routes"
+	"fmt"
+	"os"
+
+	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
+)
+
+func main() {
+	// Application entry point
+
+	err := godotenv.Load()
+	if err != nil {
+		fmt.Printf("Error loading .env file: %v", err)
+	}
+
+	app := gin.Default()
+
+	if os.Getenv("GO_ENV") == "production" {
+		gin.SetMode(gin.ReleaseMode)
+	}
+	app.Use(request.RequestIDMiddleware())
+	app.Use(logs.LoggerRequestMiddleware())
+	logs.LoggerErrorMiddleware()
+	routes.InitRouters(app)
+	port := os.Getenv("SERVICE_PORT")
+	service_host := os.Getenv("SERVICE_HOST")
+	fmt.Printf("SERVICE RUNNING ON : %s:%v", service_host, port)
+	app.Use(health.HealthCheck())
+	app.Run(":" + port)
+
+}
+`,
+		"cmd/routes/router.go":                                                              "package routes\n",
+		"cmd/middleware/health/healthCheck.go":                                              "package health\n",
+		"cmd/middleware/log/log_http.go":                                                    "package log\n",
+		"cmd/middleware/log/log_error.go":                                                   "package log\n",
+		"cmd/middleware/log/log_request.go":                                                 "package log\n",
+		"cmd/middleware/request/headerRequest.go":                                           "package request\n",
 		"cmd/routes/external/controller/authorization/sign/database/entity/signEntity.go":   "package entity\n",
 		"cmd/routes/external/controller/authorization/sign/database/service/signService.go": "package service\n",
 		"cmd/routes/external/controller/authorization/sign/domain/api/api.go":               "package api\n",
@@ -289,12 +328,12 @@ require (
 		"cmd/routes/internal/controller/authorization/sign/domain/http/httpInterface.go":    "package http\n",
 		"cmd/routes/internal/controller/authorization/sign/domain/model/signHttp.go":        "package model\n",
 		"cmd/routes/internal/controller/authorization/sign/model/signModel.go":              "package model\n",
-		"config/configStatus.go":         "package database\n",
-		"config/database/databaseLog.go": "package database\n",
-		"config/http/httpConfig.go":      "package http\n",
-		"config/http/model/httpModel.go": "package model\n",
-		"util/bcrypt/bcrypt.go":          "package bcrypt\n",
-		"util/jwt/jwt.go":                "package jwt\n",
+		"config/configStatus.go":                                                            "package database\n",
+		"config/database/databaseLog.go":                                                    "package database\n",
+		"config/http/httpConfig.go":                                                         "package http\n",
+		"config/http/model/httpModel.go":                                                    "package model\n",
+		"util/bcrypt/bcrypt.go":                                                             "package bcrypt\n",
+		"util/jwt/jwt.go":                                                                   "package jwt\n",
 	}
 
 	for p, c := range baseFiles {
