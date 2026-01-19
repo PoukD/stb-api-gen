@@ -178,7 +178,7 @@ go 1.21
 		"config/http/httpConfig.go":      "package http\n",
 		"config/http/model/httpModel.go": "package model\n",
 		"util/bcrypt/bcrypt.go":          "package bcrypt\n",
-		"util/jwt/jwt.go":                "package jwttt\n",
+		"util/jwt/jwt.go":                "package jwt\n",
 	}
 
 	for p, c := range baseFiles {
