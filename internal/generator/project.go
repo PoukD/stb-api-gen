@@ -102,9 +102,75 @@ func CreateProject(project string) error {
 
 	// root files
 	rootFiles := map[string]string{
-		".env":       "",
-		".gitignore": "bin/\n*.log\n.env\n",
-		"README.md":  "# " + project + "\n",
+		".env": fmt.Sprintf(`
+		SERVICE_PORT=3201
+SERVICE_NAME=%s
+SERVICE_HOST=127.0.0.1
+SERVICE_ID=%s-${SERVICE_PORT}
+GO_ENV=development
+GIN_MODE=debug
+# GO_ENV=production
+# GIN_MODE=release
+
+
+SM_DB_LOG_HOST=127.0.0.1
+SM_DB_LOG_PORT=3306
+SM_DB_LOG_NAME=
+SM_DB_LOG_USER=
+SM_DB_LOG_PASSWORD=''
+SM_DB_LOG_MAX_IDLE_CONNS=10
+SM_DB_LOG_MAX_OPEN_CONNS=100
+
+MERCHANT_URL=http://
+MERCHANT_GET_DETAIL_URL=${MERCHANT_URL}merchant/api/v1/merchant/by-cif/
+
+MOBILE_API_URL=http://127.0.0.1:21111
+MOBILE_API_GET_DETAIL_URL=${MOBILE_API_URL}/v1/api/account-int/QueryAllAccByCif/[cif]
+
+HEALTH_CHECK_INTERVAL=http://127.0.0.1
+HEALTH_CHECK_PATH=/health
+HEALTH_CHECK_PORT=8080
+HEALTH_CHECK_URL=${HEALTH_CHECK_INTERVAL}:${HEALTH_CHECK_PORT}${HEALTH_CHECK_PATH}
+`, project, project),
+		".gitignore": `
+		.env
+		logs/
+		auth-service`,
+		"README.md": `# golang-structure
+
+#### INSTALL PACKAGE STRUCTURE
+
+### MACOS
+
+go install github.com/PoukD/create-structure-controller@latest
+go env GOPATH
+echo 'export PATH="$PATH:$(go env GOPATH)/bin"' >> ~/.zshrc
+source ~/.zshrc
+create-structure-controller nameController internal
+
+### Window
+
+go install github.com/PoukD/create-structure-controller@latest
+create-structure-controller nameController internal
+
+#### END
+
+## Getting started
+
+go get
+go run ./cmd/app
+
+### BUILD
+
+# MACOS or Linux
+
+GOOS=linux GOARCH=amd64 go build -o SERVICE_NAME ./cmd/app
+
+# WINDOW
+
+$Env:GOOS="linux"; $Env:GOARCH = "amd64"
+go build -o SERVICE_NAME ./cmd/app
+`,
 		"go.mod": fmt.Sprintf(`module %s
 
 go 1.24.3
