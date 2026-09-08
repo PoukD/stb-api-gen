@@ -26,7 +26,6 @@ func createInternalCMS(root string) error {
 	base := "cmd/routes/internal/cms"
 
 	dirs := []string{
-		"database/entity",
 		"database/service",
 		"domain/http",
 		"domain/model",
@@ -41,7 +40,6 @@ func createInternalCMS(root string) error {
 
 	files := map[string]string{
 		base + "/cmsController.go":               "package cms\n",
-		base + "/database/entity/cmsEntity.go":   "package entity\n",
 		base + "/database/service/cmsService.go": "package service\n",
 		base + "/domain/http/httpInterface.go":   "package http\n",
 		base + "/domain/model/cmsHttp.go":        "package model\n",
@@ -63,7 +61,6 @@ func createExternalAuthorization(root string, name string) error {
 	)
 
 	dirs := []string{
-		"database/entity",
 		"database/service",
 		"domain/api",
 		"domain/http",
@@ -79,7 +76,6 @@ func createExternalAuthorization(root string, name string) error {
 
 	files := map[string]string{
 		base + "/" + name + "Controller.go":               "package " + name + "\n",
-		base + "/database/entity/" + name + "Entity.go":   "package entity\n",
 		base + "/database/service/" + name + "Service.go": "package service\n",
 		base + "/domain/api/api.go":                       "package api\n",
 		base + "/domain/http/httpInterface.go":            "package http\n",
@@ -240,13 +236,11 @@ require (
 		"cmd/middleware/log",
 		"cmd/middleware/request",
 		"cmd/middleware/verify",
-		"cmd/routes/external/controller/authorization/sign/database/entity",
 		"cmd/routes/external/controller/authorization/sign/database/service",
 		"cmd/routes/external/controller/authorization/sign/domain/api",
 		"cmd/routes/external/controller/authorization/sign/domain/http",
 		"cmd/routes/external/controller/authorization/sign/domain/model",
 		"cmd/routes/external/controller/authorization/sign/model",
-		"cmd/routes/internal/controller/authorization/sign/database/entity",
 		"cmd/routes/internal/controller/authorization/sign/database/service",
 		"cmd/routes/internal/controller/authorization/sign/domain/api",
 		"cmd/routes/internal/controller/authorization/sign/domain/http",
@@ -316,13 +310,11 @@ func main() {
 		"cmd/middleware/log/log_error.go":                                                   "package log\n",
 		"cmd/middleware/log/log_request.go":                                                 "package log\n",
 		"cmd/middleware/request/headerRequest.go":                                           "package request\n",
-		"cmd/routes/external/controller/authorization/sign/database/entity/signEntity.go":   "package entity\n",
 		"cmd/routes/external/controller/authorization/sign/database/service/signService.go": "package service\n",
 		"cmd/routes/external/controller/authorization/sign/domain/api/api.go":               "package api\n",
 		"cmd/routes/external/controller/authorization/sign/domain/http/httpInterface.go":    "package http\n",
 		"cmd/routes/external/controller/authorization/sign/domain/model/signHttp.go":        "package model\n",
 		"cmd/routes/external/controller/authorization/sign/model/signModel.go":              "package model\n",
-		"cmd/routes/internal/controller/authorization/sign/database/entity/signEntity.go":   "package entity\n",
 		"cmd/routes/internal/controller/authorization/sign/database/service/signService.go": "package service\n",
 		"cmd/routes/internal/controller/authorization/sign/domain/api/api.go":               "package api\n",
 		"cmd/routes/internal/controller/authorization/sign/domain/http/httpInterface.go":    "package http\n",
