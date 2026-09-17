@@ -22,8 +22,8 @@ func writeFile(root, path, content string) error {
 
 // ---------- modules ----------
 
-func createInternalCMS(root string) error {
-	base := "cmd/routes/internal/cms"
+func createCMS(root string) error {
+	base := "cmd/routes/controller/cms"
 
 	dirs := []string{
 		"database/service",
@@ -54,9 +54,9 @@ func createInternalCMS(root string) error {
 	return nil
 }
 
-func createExternalAuthorization(root string, name string) error {
+func createAuthorization(root string, name string) error {
 	base := filepath.Join(
-		"cmd/routes/external/controller/authorization",
+		"cmd/routes/controller/authorization",
 		name,
 	)
 
@@ -236,16 +236,11 @@ require (
 		"cmd/middleware/log",
 		"cmd/middleware/request",
 		"cmd/middleware/verify",
-		"cmd/routes/external/controller/authorization/sign/database/service",
-		"cmd/routes/external/controller/authorization/sign/domain/api",
-		"cmd/routes/external/controller/authorization/sign/domain/http",
-		"cmd/routes/external/controller/authorization/sign/domain/model",
-		"cmd/routes/external/controller/authorization/sign/model",
-		"cmd/routes/internal/controller/authorization/sign/database/service",
-		"cmd/routes/internal/controller/authorization/sign/domain/api",
-		"cmd/routes/internal/controller/authorization/sign/domain/http",
-		"cmd/routes/internal/controller/authorization/sign/domain/model",
-		"cmd/routes/internal/controller/authorization/sign/model",
+		"cmd/routes/controller/authorization/sign/database/service",
+		"cmd/routes/controller/authorization/sign/domain/api",
+		"cmd/routes/controller/authorization/sign/domain/http",
+		"cmd/routes/controller/authorization/sign/domain/model",
+		"cmd/routes/controller/authorization/sign/model",
 		"cmd/routes",
 		"config/database",
 		"config/http/model",
@@ -310,16 +305,11 @@ func main() {
 		"cmd/middleware/log/log_error.go":                                                   "package log\n",
 		"cmd/middleware/log/log_request.go":                                                 "package log\n",
 		"cmd/middleware/request/headerRequest.go":                                           "package request\n",
-		"cmd/routes/external/controller/authorization/sign/database/service/signService.go": "package service\n",
-		"cmd/routes/external/controller/authorization/sign/domain/api/api.go":               "package api\n",
-		"cmd/routes/external/controller/authorization/sign/domain/http/httpInterface.go":    "package http\n",
-		"cmd/routes/external/controller/authorization/sign/domain/model/signHttp.go":        "package model\n",
-		"cmd/routes/external/controller/authorization/sign/model/signModel.go":              "package model\n",
-		"cmd/routes/internal/controller/authorization/sign/database/service/signService.go": "package service\n",
-		"cmd/routes/internal/controller/authorization/sign/domain/api/api.go":               "package api\n",
-		"cmd/routes/internal/controller/authorization/sign/domain/http/httpInterface.go":    "package http\n",
-		"cmd/routes/internal/controller/authorization/sign/domain/model/signHttp.go":        "package model\n",
-		"cmd/routes/internal/controller/authorization/sign/model/signModel.go":              "package model\n",
+		"cmd/routes/controller/authorization/sign/database/service/signService.go": "package service\n",
+		"cmd/routes/controller/authorization/sign/domain/api/api.go":               "package api\n",
+		"cmd/routes/controller/authorization/sign/domain/http/httpInterface.go":    "package http\n",
+		"cmd/routes/controller/authorization/sign/domain/model/signHttp.go":        "package model\n",
+		"cmd/routes/controller/authorization/sign/model/signModel.go":              "package model\n",
 		"config/configStatus.go":                                                            "package database\n",
 		"config/database/databaseLog.go":                                                    "package database\n",
 		"config/http/httpConfig.go":                                                         "package http\n",
@@ -335,14 +325,14 @@ func main() {
 	}
 
 	// modules
-	if err := createInternalCMS(root); err != nil {
+	if err := createCMS(root); err != nil {
 		return err
 	}
 
-	if err := createExternalAuthorization(root, "register"); err != nil {
+	if err := createAuthorization(root, "register"); err != nil {
 		return err
 	}
-	if err := createExternalAuthorization(root, "sign"); err != nil {
+	if err := createAuthorization(root, "sign"); err != nil {
 		return err
 	}
 
