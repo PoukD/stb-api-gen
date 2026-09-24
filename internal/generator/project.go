@@ -26,7 +26,7 @@ func createCMS(root string) error {
 	base := "cmd/routes/controller/cms"
 
 	dirs := []string{
-		"database/service",
+		"service",
 		"domain/http",
 		"domain/model",
 		"model",
@@ -39,11 +39,11 @@ func createCMS(root string) error {
 	}
 
 	files := map[string]string{
-		base + "/cmsController.go":               "package cms\n",
-		base + "/database/service/cmsService.go": "package service\n",
-		base + "/domain/http/httpInterface.go":   "package http\n",
-		base + "/domain/model/cmsHttp.go":        "package model\n",
-		base + "/model/cmsModel.go":              "package model\n",
+		base + "/cmsController.go":             "package cms\n",
+		base + "/service/cmsService.go":        "package service\n",
+		base + "/domain/http/httpInterface.go": "package http\n",
+		base + "/domain/model/cmsHttp.go":      "package model\n",
+		base + "/model/cmsModel.go":            "package model\n",
 	}
 
 	for p, c := range files {
@@ -61,7 +61,7 @@ func createAuthorization(root string, name string) error {
 	)
 
 	dirs := []string{
-		"database/service",
+		"service",
 		"domain/api",
 		"domain/http",
 		"domain/model",
@@ -75,12 +75,12 @@ func createAuthorization(root string, name string) error {
 	}
 
 	files := map[string]string{
-		base + "/" + name + "Controller.go":               "package " + name + "\n",
-		base + "/database/service/" + name + "Service.go": "package service\n",
-		base + "/domain/api/api.go":                       "package api\n",
-		base + "/domain/http/httpInterface.go":            "package http\n",
-		base + "/domain/model/httpModel.go":               "package model\n",
-		base + "/model/" + name + "Model.go":              "package model\n",
+		base + "/" + name + "Controller.go":      "package " + name + "\n",
+		base + "/service/" + name + "Service.go": "package service\n",
+		base + "/domain/api/api.go":              "package api\n",
+		base + "/domain/http/httpInterface.go":   "package http\n",
+		base + "/domain/model/httpModel.go":      "package model\n",
+		base + "/model/" + name + "Model.go":     "package model\n",
 	}
 
 	for p, c := range files {
@@ -236,7 +236,7 @@ require (
 		"cmd/middleware/log",
 		"cmd/middleware/request",
 		"cmd/middleware/verify",
-		"cmd/routes/controller/authorization/sign/database/service",
+		"cmd/routes/controller/authorization/sign/service",
 		"cmd/routes/controller/authorization/sign/domain/api",
 		"cmd/routes/controller/authorization/sign/domain/http",
 		"cmd/routes/controller/authorization/sign/domain/model",
@@ -299,23 +299,23 @@ func main() {
 
 }
 `,
-		"cmd/routes/router.go":                                                              "package routes\n",
-		"cmd/middleware/health/healthCheck.go":                                              "package health\n",
-		"cmd/middleware/log/log_http.go":                                                    "package log\n",
-		"cmd/middleware/log/log_error.go":                                                   "package log\n",
-		"cmd/middleware/log/log_request.go":                                                 "package log\n",
-		"cmd/middleware/request/headerRequest.go":                                           "package request\n",
-		"cmd/routes/controller/authorization/sign/database/service/signService.go": "package service\n",
-		"cmd/routes/controller/authorization/sign/domain/api/api.go":               "package api\n",
-		"cmd/routes/controller/authorization/sign/domain/http/httpInterface.go":    "package http\n",
-		"cmd/routes/controller/authorization/sign/domain/model/signHttp.go":        "package model\n",
-		"cmd/routes/controller/authorization/sign/model/signModel.go":              "package model\n",
-		"config/configStatus.go":                                                            "package database\n",
-		"config/database/databaseLog.go":                                                    "package database\n",
-		"config/http/httpConfig.go":                                                         "package http\n",
-		"config/http/model/httpModel.go":                                                    "package model\n",
-		"util/bcrypt/bcrypt.go":                                                             "package bcrypt\n",
-		"util/jwt/jwt.go":                                                                   "package jwt\n",
+		"cmd/routes/router.go":                                                  "package routes\n",
+		"cmd/middleware/health/healthCheck.go":                                  "package health\n",
+		"cmd/middleware/log/log_http.go":                                        "package log\n",
+		"cmd/middleware/log/log_error.go":                                       "package log\n",
+		"cmd/middleware/log/log_request.go":                                     "package log\n",
+		"cmd/middleware/request/headerRequest.go":                               "package request\n",
+		"cmd/routes/controller/authorization/sign/service/signService.go":       "package service\n",
+		"cmd/routes/controller/authorization/sign/domain/api/api.go":            "package api\n",
+		"cmd/routes/controller/authorization/sign/domain/http/httpInterface.go": "package http\n",
+		"cmd/routes/controller/authorization/sign/domain/model/signHttp.go":     "package model\n",
+		"cmd/routes/controller/authorization/sign/model/signModel.go":           "package model\n",
+		"config/configStatus.go":                                                "package database\n",
+		"config/database/databaseLog.go":                                        "package database\n",
+		"config/http/httpConfig.go":                                             "package http\n",
+		"config/http/model/httpModel.go":                                        "package model\n",
+		"util/bcrypt/bcrypt.go":                                                 "package bcrypt\n",
+		"util/jwt/jwt.go":                                                       "package jwt\n",
 	}
 
 	for p, c := range baseFiles {
